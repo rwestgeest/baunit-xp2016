@@ -4,7 +4,7 @@ assert_equals() {
   if [[ $expected != $actual ]]
   then
     echo "Assertion failed; expected '$expected', but was: '$actual'"
-    return 1
+    exit 1
   fi
 }
 test_assert_equals_shows_message_on_error() {
@@ -13,6 +13,9 @@ test_assert_equals_shows_message_on_error() {
 }
 test_assert_equals_returns_1_on_error() {
   [[ 1 == $(a_silent_run_of assert_equals 0 1)$? ]]
+}
+test_assert_equals_exits_on_error() {
+  [[ 1 == $(a_silent_run_of assert_equals 0 1; return 0)$? ]]
 }
 test_assert_equals_shows_nothing_on_success() {
   [[ "" == $(assert_equals 1 1)  ]]
