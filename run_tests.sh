@@ -1,11 +1,15 @@
 #!/bin/sh
 
 test_first() {
-  echo was_run
+  echo first_run
+}
+test_second() {
+  echo second_run
 }
 
 run_tests() {
   test_first
+  test_second
 }
 
-[[ "was_run" == $(run_tests) ]]
+[[ "first_run second_run" == $(run_tests | xargs) ]]
