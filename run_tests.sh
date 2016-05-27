@@ -1,4 +1,13 @@
 #!/bin/sh
+assert_equals() {
+  local expected=$1
+  local actual=$2
+  if [[ $expected != $actual ]]
+  then
+    echo "Assertion failed; expected '$expected', but was: '$actual'"
+    exit 1
+  fi
+}
 
 run_tests() {
   local test_module=$1
