@@ -7,11 +7,23 @@ run_tests() {
   do
     ( $test )
   done
+  return 1
 }
 tests_in() {
   local test_module=$1
   grep ^test_ $test_module | sed -e 's/[() {]//g'
 }
 
-[[ "first_run second_run" == $(run_tests data/a_module_with_2_tests.sh | xargs) ]] &&
-[[ "first_run second_run" == $(run_tests data/a_module_with_2_tests_where_one_fails.sh | xargs) ]]
+a_single_line_log_of() {
+  $@ | xargs
+}
+a_test_run_of() {
+  local test_module=$1
+  run_tests data/$test_module.sh
+}
+a_silent_run_of() {
+  $@ > /dev/null
+}
+[[ "first_run second_run" == $(a_single_line_log_of a_test_run_of a_module_with_2_tests ) ]] &&
+[[ "first_run second_run" == $(a_single_line_log_of a_test_run_of a_module_with_2_tests_where_one_fails) ]] &&
+[[ 1 == $(a_silent_run_of a_test_run_of a_module_with_2_tests_where_one_fails)$? ]]
