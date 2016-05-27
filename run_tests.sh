@@ -8,7 +8,15 @@ assert_equals() {
     exit 1
   fi
 }
-
+report_progress() {
+  local result=$1
+  if [[ $result != 0 ]]
+  then
+    printf "F"
+  else
+    printf "."
+  fi
+}
 run_tests() {
   local test_module=$1
   source $test_module
@@ -16,7 +24,9 @@ run_tests() {
   for test in $(tests_in $test_module)
   do
     ( $test )
-    (( module_result = module_result || $? ))
+    local test_result=$?
+    report_progress $test_result
+    (( module_result = module_result || $test_result ))
   done
   return $module_result
 }
@@ -36,4 +46,5 @@ a_silent_run_of() {
   $@ > /dev/null
 }
 run_tests tests/runner_tests.sh &&
-  run_tests tests/assertion_tests.sh
+  run_tests tests/assertion_tests.sh &&
+  run_tests tests/report_tests.sh
