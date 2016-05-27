@@ -5,7 +5,7 @@ test_first() {
 }
 
 run_tests() {
-return 0
+  test_first
 }
 
 [[ "was_run" == $(run_tests) ]]
