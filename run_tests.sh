@@ -58,6 +58,11 @@ a_test_run_of() {
 a_silent_run_of() {
   $@ > /dev/null
 }
+run_all_tests() {
+
 run_tests tests/runner_tests.sh &&
   run_tests tests/assertion_tests.sh &&
   run_tests tests/report_tests.sh
+}
+
+report_on run_all_tests
