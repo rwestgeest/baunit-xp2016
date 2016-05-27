@@ -5,7 +5,7 @@ run_tests() {
   source $test_module
   for test in $(tests_in $test_module)
   do
-    $test
+    ( $test )
   done
 }
 tests_in() {
@@ -13,4 +13,5 @@ tests_in() {
   grep ^test_ $test_module | sed -e 's/[() {]//g'
 }
 
-[[ "first_run second_run" == $(run_tests data/a_module_with_2_tests.sh | xargs) ]]
+[[ "first_run second_run" == $(run_tests data/a_module_with_2_tests.sh | xargs) ]] &&
+[[ "first_run second_run" == $(run_tests data/a_module_with_2_tests_where_one_fails.sh | xargs) ]]
