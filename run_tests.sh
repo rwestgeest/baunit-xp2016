@@ -26,4 +26,5 @@ a_test_run_of() {
 a_silent_run_of() {
   $@ > /dev/null
 }
-run_tests tests/runner_tests.sh
+run_tests tests/runner_tests.sh &&
+  run_tests tests/assertion_tests.sh
