@@ -26,7 +26,4 @@ a_test_run_of() {
 a_silent_run_of() {
   $@ > /dev/null
 }
-[[ "first_run second_run" == $(a_single_line_log_of a_test_run_of a_module_with_2_tests ) ]] &&
-[[ "first_run second_run" == $(a_single_line_log_of a_test_run_of a_module_with_2_tests_where_one_fails) ]] &&
-[[ 1 == $(a_silent_run_of a_test_run_of a_module_with_2_tests_where_one_fails)$? ]] &&
-[[ 0 == $(a_silent_run_of a_test_run_of a_module_with_2_tests)$? ]]
+run_tests tests/runner_tests.sh
