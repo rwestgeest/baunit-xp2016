@@ -17,15 +17,28 @@ report_progress() {
     printf "."
   fi
 }
+report_on() {
+  tests_run=0
+  tests_failed=0
+  $@
+  if [[ $tests_failed != 0 ]]
+  then
+    echo "Failed; tests run: '$tests_run', failed: '$tests_failed'"
+  else
+    echo "Success; tests run: '$tests_run', failed: '$tests_failed'"
+  fi
+}
 run_tests() {
   local test_module=$1
   source $test_module
   local module_result=0
   for test in $(tests_in $test_module)
   do
+    (( tests_run += 1 ))
     ( $test )
     local test_result=$?
     report_progress $test_result
+    [[ $test_result != 0 ]] && (( tests_failed += 1 ))
     (( module_result = module_result || $test_result ))
   done
   return $module_result
